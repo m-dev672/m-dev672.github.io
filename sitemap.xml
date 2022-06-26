@@ -2,23 +2,23 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://risotto.joeroe.io/about/</loc>
+    <loc>https://m-dev672.github.io/about/</loc>
     <lastmod>2022-06-26T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://risotto.joeroe.io/archives/</loc>
+    <loc>https://m-dev672.github.io/archives/</loc>
     <lastmod>2019-05-28T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://risotto.joeroe.io/</loc>
+    <loc>https://m-dev672.github.io/</loc>
     <priority>0</priority>
   </url><url>
-    <loc>https://risotto.joeroe.io/categories/</loc>
+    <loc>https://m-dev672.github.io/categories/</loc>
   </url><url>
-    <loc>https://risotto.joeroe.io/tags/index/</loc>
+    <loc>https://m-dev672.github.io/tags/index/</loc>
   </url><url>
-    <loc>https://risotto.joeroe.io/post/</loc>
+    <loc>https://m-dev672.github.io/post/</loc>
   </url><url>
-    <loc>https://risotto.joeroe.io/series/</loc>
+    <loc>https://m-dev672.github.io/series/</loc>
   </url><url>
-    <loc>https://risotto.joeroe.io/tags/</loc>
+    <loc>https://m-dev672.github.io/tags/</loc>
   </url>
 </urlset>

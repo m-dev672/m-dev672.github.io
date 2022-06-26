@@ -2,10 +2,10 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on Where you at?</title>
-    <link>https://risotto.joeroe.io/categories/</link>
+    <link>https://m-dev672.github.io/categories/</link>
     <description>Recent content in Categories on Where you at?</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>jp</language>
-    <copyright>© 2021 Koutarou Mori</copyright><atom:link href="https://risotto.joeroe.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    <copyright>© 2021 Koutarou Mori</copyright><atom:link href="https://m-dev672.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>
