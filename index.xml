@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Where you at?</title>
+    <link>https://risotto.joeroe.io/</link>
+    <description>Recent content on Where you at?</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>jp</language>
+    <copyright>© 2021 Koutarou Mori</copyright><atom:link href="https://risotto.joeroe.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>About</title>
+      <link>https://risotto.joeroe.io/about/</link>
+      <pubDate>Sun, 26 Jun 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://risotto.joeroe.io/about/</guid>
+      <description>https://ameblo.jp/m-dev672 のミラーです。 プログラミングとか電子工作の記録を残しています。</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://risotto.joeroe.io/archives/</link>
+      <pubDate>Tue, 28 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://risotto.joeroe.io/archives/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>
