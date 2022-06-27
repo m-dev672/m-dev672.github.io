@@ -4,7 +4,6 @@
 @import 'logo.css';
 @import 'about.css';
 @import 'footer.css';
-@import 'custom.css';
 
 body {
     background-color: var(--dark-bg);
