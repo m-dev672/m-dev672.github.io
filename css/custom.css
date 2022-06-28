@@ -9,3 +9,37 @@
 * {
   font-family: "Shinonome Gothic Medium 14";
 }
+
+code {
+  font-family: "Shinonome Gothic Medium 14"!important;
+}
+
+@media screen and (max-width: 480px) {
+  .page__header {
+    display: block;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .page__logo {
+    display: inline-block;
+  }
+}
+
+.main-nav ul {
+  gap: 0 2.5rem;
+}
+
+.main-nav ul {
+  margin-left: 2.5rem;
+}
+
+@media screen and (max-width: 480px) {
+  .main-nav ul {
+    margin-left: 1rem;
+  }
+}
+
+.main-nav li {
+  margin-left: 0;
+}
