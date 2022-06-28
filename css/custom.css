@@ -2,10 +2,10 @@
 
 @font-face {
   font-display: swap;
-  font-family: "Shinonome Font 12";
-  src: url("/fonts/shnmk12.woff2");
+  font-family: "Shinonome Gothic Medium 14";
+  src: url("/fonts/shnmk14.woff2");
 }
 
 * {
-  font-family: "Shinonome Font 12";
+  font-family: "Shinonome Gothic Medium 14";
 }
