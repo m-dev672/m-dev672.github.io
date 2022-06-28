@@ -5,13 +5,13 @@
     <loc>https://m-dev672.github.io/articles/</loc>
     <lastmod>2022-06-29T00:17:48+09:00</lastmod>
   </url><url>
-    <loc>https://m-dev672.github.io/tags/garbage/</loc>
+    <loc>https://m-dev672.github.io/categories/</loc>
+    <lastmod>2022-06-29T00:17:48+09:00</lastmod>
+  </url><url>
+    <loc>https://m-dev672.github.io/categories/garbage/</loc>
     <lastmod>2022-06-29T00:17:48+09:00</lastmod>
   </url><url>
     <loc>https://m-dev672.github.io/articles/sample/</loc>
-    <lastmod>2022-06-29T00:17:48+09:00</lastmod>
-  </url><url>
-    <loc>https://m-dev672.github.io/tags/</loc>
     <lastmod>2022-06-29T00:17:48+09:00</lastmod>
   </url><url>
     <loc>https://m-dev672.github.io/</loc>
@@ -20,8 +20,8 @@
     <loc>https://m-dev672.github.io/about/</loc>
     <lastmod>2022-06-26T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://m-dev672.github.io/categories/</loc>
-  </url><url>
     <loc>https://m-dev672.github.io/series/</loc>
+  </url><url>
+    <loc>https://m-dev672.github.io/tags/</loc>
   </url>
 </urlset>
