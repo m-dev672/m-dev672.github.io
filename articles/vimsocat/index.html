@@ -112,7 +112,7 @@ call plug#end()
     \ })
 </code></pre><p><code>nvim main.go</code> でnvimを起動してみて、fmtをインポートせずに<code>fmt.Println(&quot;Fuck off&quot;)</code>とでも書いてあげればエラーを教えてくれるはずです。</p>
 <h3 id="rsyncでソースの共有">rsyncでソースの共有</h3>
-<p>Language Serverとvim-lspでお喋りはできました。しかし、リモートの環境に利用しているモジュールがインストールされていなかったり、vim-lspは編集中のファイルはjsonの中に埋め込んで送っているのですが、他のファイルは送ってくれないので、他ファイルの関数などがUndefinedになってしまいます。そのため、Goならファイルをリモートに送って<code>go mod tidy</code>したり、Pythonなら同じくファイルをリモートに送って<code>pip install -r requirements.txt</code>しないといけません。rsyncは、リモートとローカルにrsyncをインストールしておけば、特にサーバーを立てる必要もなく、ssh経由でソースを送ってくれる上に、差分のみ送ってくれるので、回線にも優しく、非常に都合がいいです。</p>
+<p>Language Serverとvim-lspでお喋りはできました。しかし、リモートの環境に利用しているモジュールがインストールされていなかったり、vim-lspは編集中のファイルはjsonの中に埋め込んで送っているのですが、他のファイルは送ってくれないので、他ファイルの関数などがUndefinedになってしまいます。そのため、Goならファイルをリモートに送って<code>go mod tidy</code>したり、Pythonなら同じくファイルをリモートに送って<code>pip install -r requirements.txt</code>しないといけません。rsyncは、リモートとローカルにrsyncをインストールしておけば、特にサーバーを立てる必要もなく、ssh経由で差分のみ送ってくれるので、回線にも優しく非常に都合がいいです。</p>
 <p><code>rsync -rltoDc -e &quot;ssh -i IDENTITY_FILE -p $SSH_PORT&quot; $WORKSPACE $REMOTE_USR@$REMOTE_ADDR:$WORKSPACE</code></p>
 <p>こんな感じのコマンドでリモートの<code>$WORKSPACE</code>をローカルの<code>$WORKSPACE</code>と同期できます。</p>
 <p>まだリモートとローカルの<code>$WORKSPACE</code>の場所を別にする方法がわかっていないのでリモートとローカルの<code>$WORKSPACE</code>の場所は同じです。</p>
