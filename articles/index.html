@@ -54,16 +54,9 @@
         </header>
 
         <section class="post__summary">
-            前書き iPad上のiVimでLanguage Serverの恩恵を受けることが最終目標！その前段階として、この記事ではリモートのLanguage Serverとvim-lspでお喋りする。
-SSHを使ってリモートのVimで作業してもいいけど、ネットワークが不安定な時に編集できなくなるのは嫌なので、ファイルはローカルにおいてLanguage Serverだけ外において、ネットワークが不安定な時に使用できなくなる機能を最低限に抑えたい。
-環境     OS Vim 追加したパッケージ     リモート Ubuntu 22.04 LTS - socat, golang, gopls   ローカル Ubuntu 22.04 LTS NVIM v0.6.1 socat, neovim, curl, git     リモートもローカルもProxmoxのLXCコンテナ上で動作していて、SSHを使ってメインPCから作業を行っています。
- 方法 Language Serverへ諸々情報を渡す方法は意外と単純で、stdinにJSON-RPCというプロトコルに準拠したjsonを張り付けているだけらしい。レスポンスはstdout。なので、stdioとかをリレーしてくれるsocatやncを使えばリモートでLanguage Serverとお喋りできそう。
-GoとかPythonの環境はリモートに置くので、プロジェクトのファイルはローカルとリモートで共有しておく必要がありそう。
-rsyncで差分だけを共有することで、細い回線でも共有しておきたい。
-手順 リモートにsocatとgolang, goplsをインストール apt install socat golang gopls
-goplsにJSON-RPCを流すsocatサーバーを立てる socat tcp-listen:1024,fork,reuseaddr exec:'gopls'
-コマンドの雑解説 tcp-listen:1024 1024ポートでLISTEN ,fork,reuseaddr よくわからんけど多分1対多で通信できるようになる？ exec:&lsquo;gopls&rsquo; goplsを実行してstdinで通信を流してstdioを返す
-ローカルにsocatとnvimをインストール vim-plugとvim-lspを入れるためにcurlとgitもインストールします。
+            <h2 id="前書き">前書き</h2>
+<p>iPad上のiVimでLanguage Serverの恩恵を受けることが最終目標！その前段階として、この記事ではリモートのLanguage Serverとvim-lspでお喋りする。</p>
+<p>SSHを使ってリモートのVimで作業してもいいけど、ネットワークが不安定な時に編集できなくなるのは嫌なので、ファイルはローカルにおいてLanguage Serverだけ外において、ネットワークが不安定な時に使用できなくなる機能を最低限に抑えたい。</p>
         </section>
     </article>
     
@@ -77,9 +70,7 @@ goplsにJSON-RPCを流すsocatサーバーを立てる socat tcp-listen:1024,for
         </header>
 
         <section class="post__summary">
-            h1 h2 h3 h4 h5 h6 Hello World !
- Hello World!
-  Hello  World  !       Hello World World! !  Hello World! console.log(&#34;Hello World!&#34;);    Hello World !     Hello World !    Hello World!
+            h1 h2 h3 h4 h5 h6 Hello World ! Hello World! Hello World ! Hello World World! ! Hello World! console.log(&#34;Hello World!&#34;); Hello World ! Hello World ! Hello World!
         </section>
     </article>
     

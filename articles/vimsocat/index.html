@@ -76,7 +76,7 @@
 <h2 id="方法">方法</h2>
 <p>Language Serverへ諸々情報を渡す方法は意外と単純で、stdinにJSON-RPCというプロトコルに準拠したjsonを張り付けているだけらしい。レスポンスはstdout。なので、stdioとかをリレーしてくれるsocatやncを使えばリモートでLanguage Serverとお喋りできそう。</p>
 <p>GoとかPythonの環境はリモートに置くので、プロジェクトのファイルはローカルとリモートで共有しておく必要がありそう。</p>
-<p>rsyncで差分だけを共有することで、細い回線でも共有しておきたい。</p>
+<p>rsyncで差分だけを共有することで、うんちなネットワーク環境でもお喋りしたい。</p>
 <h2 id="手順">手順</h2>
 <h3 id="リモートにsocatとgolang-goplsをインストール">リモートにsocatとgolang, goplsをインストール</h3>
 <p><code>apt install socat golang gopls</code></p>
@@ -102,8 +102,8 @@ Plug &#39;prabirshrestha/vim-lsp&#39;
 call plug#end()
 </code></pre><p>保存したら、nvimを起動し<code>:PlugInstall</code>と打ちます。すると勝手にgitを使って引っ張ってきてくれます。</p>
 <h3 id="vim-lspの設定">vim-lspの設定</h3>
-<p>通常のvim-lspのコマンドが<code>gopls</code>となっているところを、<code>socat stdio tcp4:192.168.2.215:1024,shut-none</code>というすることでこちらのstdioをリモートのstdio、つまりリモートのgoplsに渡してくれます。</p>
-<p>nameとcmdとwhitelistさえ設定しておけばよさそうです。</p>
+<p>通常のvim-lspの設定のcmdが<code>gopls</code>となっているところを、<code>socat stdio tcp4:192.168.2.215:1024,shut-none</code>というすることでこちらのstdinをリモートのstdin、つまりリモートのgoplsに渡し、goplsがstdioに吐き出した内容をローカルのstdioに吐き出してくれます。</p>
+<p>vim-lspの設定は最低限nameとcmdとwhitelistさえ設定しておけばとりあえずよさそうです。</p>
 <p>先ほどのinit.vimに以下を追記します。</p>
 <pre tabindex="0"><code>au User lsp_setup call lsp#register_server({
     \ &#39;name&#39;: &#39;gopls&#39;,
@@ -112,7 +112,7 @@ call plug#end()
     \ })
 </code></pre><p><code>nvim main.go</code> でnvimを起動してみて、fmtをインポートせずに<code>fmt.Println(&quot;Fuck off&quot;)</code>とでも書いてあげればエラーを教えてくれるはずです。</p>
 <h3 id="rsyncでソースの共有">rsyncでソースの共有</h3>
-<p>Language Serverとvim-lspでお喋りはできました。しかし、リモートの環境に利用しているモジュールがインストールされていなかったり、vim-lspは編集中のファイルはjsonの中に埋め込んで送っているのですが、他のファイルは送ってくれないので、他ファイルの関数などがUndefinedになってしまいます。そのため、Goならファイルをリモートに送って<code>go mod tidy</code>したり、Pythonなら同じくファイルをリモートに送って<code>pip install -r requirements.txt</code>しないといけません。rsyncは、リモートとローカルにrsyncをインストールしておけば、特にサーバーを立てる必要もなく、ssh経由で差分のみ送ってくれるので、回線にも優しく非常に都合がいいです。</p>
+<p>Language Serverとvim-lspでお喋りはできました。しかし、リモートの環境に利用しているモジュールがインストールされていなかったり、vim-lspは編集中のファイルはjsonの中に埋め込んで送っているのですが、他のファイルは送ってくれないので、モジュールや他ファイルで定義されている関数などがUndefinedになってしまいます。そのため、Goならソースをリモートに送って<code>go mod tidy</code>したり、Pythonなら同じくリモートにソースを送ったり、<code>pip install -r requirements.txt</code>しないといけません。rsyncは、リモートとローカルにrsyncをインストールしておけば、ssh経由なので特に追加でサーバーを立てる必要もなく、差分のみ送ってくれるので回線にも優しく非常に都合がいいです。</p>
 <p><code>rsync -rltoDc -e &quot;ssh -i IDENTITY_FILE -p $SSH_PORT&quot; $WORKSPACE $REMOTE_USR@$REMOTE_ADDR:$WORKSPACE</code></p>
 <p>こんな感じのコマンドでリモートの<code>$WORKSPACE</code>をローカルの<code>$WORKSPACE</code>と同期できます。</p>
 <p>まだリモートとローカルの<code>$WORKSPACE</code>の場所を別にする方法がわかっていないのでリモートとローカルの<code>$WORKSPACE</code>の場所は同じです。</p>
@@ -120,10 +120,9 @@ call plug#end()
 <p><code>&amp;&amp; ssh -i $IDENTITY_FILE -p $SSH_PORT $REMOTE_USR@$REMOTE_ADDR &quot;cd $WORKSPACE &amp;&amp; go mod tidy&quot;</code></p>
 <p>とかをくっつけてあげればワンライナーでソースの共有とモジュールのインストールができます。<code>go mod tidy</code>の部分はお使いの言語に対応させてください。</p>
 <p>。。。とここまで記事を書いて気づいたのですが、go mod tidyをした後、nvimを再起動させないとモジュールがインストールされたことに気付いてくれません。。。</p>
-<p>なぜでしょうか。。。</p>
+<p>ggってみると<a href="https://github.com/fatih/vim-go/issues/2697">こんなissue</a>を発見。これは、vim-lspじゃなくてvim-goのissueですが結論を見てみるとgoplsの仕様と書いてあります。ということはvim-lspについても同じでしょう。仕様ならと納得することにします。</p>
 <p>とりあえず力尽きたので今回の記事はここまでです。</p>
 <p>マイナー過ぎるというかスマートな人はやらないことをやっているので誰も読んでくれないだろうという推測のもとガバガバ日本語で書いています。読みにくかったらごめんなさい。</p>
-
     </div>
     <footer class="content__footer"></footer>
 
