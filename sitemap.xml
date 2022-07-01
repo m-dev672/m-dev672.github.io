@@ -3,15 +3,39 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://m-dev672.github.io/articles/</loc>
-    <lastmod>2022-06-29T00:17:48+09:00</lastmod>
+    <lastmod>2022-07-01T17:26:34+09:00</lastmod>
   </url><url>
     <loc>https://m-dev672.github.io/categories/</loc>
-    <lastmod>2022-06-29T00:17:48+09:00</lastmod>
+    <lastmod>2022-07-01T17:26:34+09:00</lastmod>
   </url><url>
-    <loc>https://m-dev672.github.io/articles/sample/</loc>
-    <lastmod>2022-06-29T00:17:48+09:00</lastmod>
+    <loc>https://m-dev672.github.io/tags/golang/</loc>
+    <lastmod>2022-07-01T17:26:34+09:00</lastmod>
+  </url><url>
+    <loc>https://m-dev672.github.io/tags/neovim/</loc>
+    <lastmod>2022-07-01T17:26:34+09:00</lastmod>
+  </url><url>
+    <loc>https://m-dev672.github.io/tags/plug-vim/</loc>
+    <lastmod>2022-07-01T17:26:34+09:00</lastmod>
+  </url><url>
+    <loc>https://m-dev672.github.io/tags/socat/</loc>
+    <lastmod>2022-07-01T17:26:34+09:00</lastmod>
+  </url><url>
+    <loc>https://m-dev672.github.io/tags/</loc>
+    <lastmod>2022-07-01T17:26:34+09:00</lastmod>
+  </url><url>
+    <loc>https://m-dev672.github.io/categories/vim/</loc>
+    <lastmod>2022-07-01T17:26:34+09:00</lastmod>
+  </url><url>
+    <loc>https://m-dev672.github.io/tags/vim-lsp/</loc>
+    <lastmod>2022-07-01T17:26:34+09:00</lastmod>
+  </url><url>
+    <loc>https://m-dev672.github.io/articles/vimsocat/</loc>
+    <lastmod>2022-07-01T17:26:34+09:00</lastmod>
   </url><url>
     <loc>https://m-dev672.github.io/</loc>
+    <lastmod>2022-07-01T17:26:34+09:00</lastmod>
+  </url><url>
+    <loc>https://m-dev672.github.io/articles/sample/</loc>
     <lastmod>2022-06-29T00:17:48+09:00</lastmod>
   </url><url>
     <loc>https://m-dev672.github.io/categories/%E3%82%B4%E3%83%9F/</loc>
@@ -21,7 +45,5 @@
     <lastmod>2022-06-26T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://m-dev672.github.io/series/</loc>
-  </url><url>
-    <loc>https://m-dev672.github.io/tags/</loc>
   </url>
 </urlset>

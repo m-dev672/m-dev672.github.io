@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="jp">
+
+    <head><title>vim-lspでリモートのLanguage Serverとお喋りする</title>
+<meta name="description" content="プログラミングとか電子工作とか">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8"/>
+
+
+<link rel="stylesheet" href="https://m-dev672.github.io/css/awesome.css" />
+
+<link rel="preload" as="font" href="https://m-dev672.github.io/fonts/shnmk14.woff2" crossorigin="anonymous">
+
+
+<link rel="stylesheet" href="https://m-dev672.github.io/css/colour/gruvbox-dark.css">
+<link rel="stylesheet" href="https://m-dev672.github.io/css/colour/dark-mode.css">
+<link rel="stylesheet" href="https://m-dev672.github.io/css/risotto.css">
+<link rel="stylesheet" href="https://m-dev672.github.io/css/custom.css"></head>
+
+    <body>
+        <div class="page">
+
+            <header class="page__header"><nav class="page__nav main-nav">
+    <ul>
+    <h1 class="page__logo"><a href="https://m-dev672.github.io" class="page__logo-inner">Where you at?</a></h1>
+    
+    
+    <li class="main-nav__item"><a class="nav-main-item" href="/about/" title="">About</a></li>
+    
+    <li class="main-nav__item"><a class="nav-main-item" href="/categories/" title="">Categories</a></li>
+    
+    <li class="main-nav__item"><a class="nav-main-item active" href="/articles/" title="Articles">Articles</a></li>
+    
+    </ul>
+</nav>
+
+</header>
+
+            <section class="page__body">
+    <header class="content__header">
+        <h1>vim-lspでリモートのLanguage Serverとお喋りする</h1>
+    </header>
+    <div class="content__body">
+        <h2 id="前書き">前書き</h2>
+<p>iPad上のiVimでLanguage Serverの恩恵を受けることが最終目標！その前段階として、この記事ではリモートのLanguage Serverとvim-lspでお喋りする。</p>
+<p>SSHを使ってリモートのVimで作業してもいいけど、ネットワークが不安定な時に編集できなくなるのは嫌なので、ファイルはローカルにおいてLanguage Serverだけ外において、ネットワークが不安定な時に使用できなくなる機能を最低限に抑えたい。</p>
+<h2 id="環境">環境</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>OS</th>
+<th>Vim</th>
+<th>追加したパッケージ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>リモート</td>
+<td>Ubuntu 22.04 LTS</td>
+<td>-</td>
+<td>socat, golang, gopls</td>
+</tr>
+<tr>
+<td>ローカル</td>
+<td>Ubuntu 22.04 LTS</td>
+<td>NVIM v0.6.1</td>
+<td>socat, neovim, curl, git</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>リモートもローカルもProxmoxのLXCコンテナ上で動作していて、SSHを使ってメインPCから作業を行っています。</p>
+</blockquote>
+<h2 id="方法">方法</h2>
+<p>Language Serverへ諸々情報を渡す方法は意外と単純で、stdinにJSON-RPCというプロトコルに準拠したjsonを張り付けているだけらしい。レスポンスはstdout。なので、stdioとかをリレーしてくれるsocatやncを使えばリモートでLanguage Serverとお喋りできそう。</p>
+<p>GoとかPythonの環境はリモートに置くので、プロジェクトのファイルはローカルとリモートで共有しておく必要がありそう。</p>
+<p>rsyncで差分だけを共有することで、細い回線でも共有しておきたい。</p>
+<h2 id="手順">手順</h2>
+<h3 id="リモートにsocatとgolang-goplsをインストール">リモートにsocatとgolang, goplsをインストール</h3>
+<p><code>apt install socat golang gopls</code></p>
+<h3 id="goplsにjson-rpcを流すsocatサーバーを立てる">goplsにJSON-RPCを流すsocatサーバーを立てる</h3>
+<p><code>socat tcp-listen:1024,fork,reuseaddr exec:'gopls'</code></p>
+<h4 id="コマンドの雑解説">コマンドの雑解説</h4>
+<p>tcp-listen:1024 1024ポートでLISTEN</br>
+,fork,reuseaddr よくわからんけど多分1対多で通信できるようになる？</br>
+exec:&lsquo;gopls&rsquo; goplsを実行してstdinで通信を流してstdioを返す</p>
+<h3 id="ローカルにsocatとnvimをインストール">ローカルにsocatとnvimをインストール</h3>
+<p>vim-plugとvim-lspを入れるためにcurlとgitもインストールします。</p>
+<p><code>apt install socat neovim curl git</code></p>
+<h3 id="vim-plugをインストール">vim-plugをインストール</h3>
+<p><a href="https://github.com/junegunn/vim-plug">公式のGitHub</a>のREADME.mdにあるワンライナーを実行します。</p>
+<p><code>sh -c 'curl -fLo &quot;${XDG_DATA_HOME:-$HOME/.local/share}&quot;/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'</code></p>
+<h3 id="vim-lsp-をインストール">vim-lsp をインストール</h3>
+<p>~/.config/nvimを作って、その中のinit.vimに以下を貼り付けます。
+せっかくなのでneovimで編集してみます。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>mkdir -p ~/.config/nvim
+</span></span><span style="display:flex;"><span>nvim ~/.config/nvim/init.vim
+</span></span></code></pre></div><pre tabindex="0"><code>call plug#begin()
+Plug &#39;prabirshrestha/vim-lsp&#39;
+call plug#end()
+</code></pre><p>保存したら、nvimを起動し<code>:PlugInstall</code>と打ちます。すると勝手にgitを使って引っ張ってきてくれます。</p>
+<h3 id="vim-lspの設定">vim-lspの設定</h3>
+<p>通常のvim-lspのコマンドが<code>gopls</code>となっているところを、<code>socat stdio tcp4:192.168.2.215:1024,shut-none</code>というすることでこちらのstdioをリモートのstdio、つまりリモートのgoplsに渡してくれます。</p>
+<p>nameとcmdとwhitelistさえ設定しておけばよさそうです。</p>
+<p>先ほどのinit.vimに以下を追記します。</p>
+<pre tabindex="0"><code>au User lsp_setup call lsp#register_server({
+    \ &#39;name&#39;: &#39;gopls&#39;,
+    \ &#39;cmd&#39;: {server_info-&gt;[&#39;socat&#39;, &#39;stdio&#39;, &#39;tcp4:192.168.2.215:1024,shut-none&#39;]},
+    \ &#39;whitelist&#39;: [&#39;go&#39;],
+    \ })
+</code></pre><p><code>nvim main.go</code> でnvimを起動してみて、fmtをインポートせずに<code>fmt.Println(&quot;Fuck off&quot;)</code>とでも書いてあげればエラーを教えてくれるはずです。</p>
+<h3 id="rsyncでソースの共有">rsyncでソースの共有</h3>
+<p>Language Serverとvim-lspでお喋りはできました。しかし、リモートの環境に利用しているモジュールがインストールされていなかったり、vim-lspは編集中のファイルはjsonの中に埋め込んで送っているのですが、他のファイルは送ってくれないので、他ファイルの関数などがUndefinedになってしまいます。そのため、Goならファイルをリモートに送って<code>go mod tidy</code>したり、Pythonなら同じくファイルをリモートに送って<code>pip install -r requirements.txt</code>しないといけません。rsyncは、リモートとローカルにrsyncをインストールしておけば、特にサーバーを立てる必要もなく、ssh経由でソースを送ってくれる上に、差分のみ送ってくれるので、回線にも優しく、非常に都合がいいです。</p>
+<p><code>rsync -rltoDc -e &quot;ssh -i IDENTITY_FILE -p $SSH_PORT&quot; $WORKSPACE $REMOTE_USR@$REMOTE_ADDR:$WORKSPACE</code></p>
+<p>こんな感じのコマンドでリモートの<code>$WORKSPACE</code>をローカルの<code>$WORKSPACE</code>と同期できます。</p>
+<p>まだリモートとローカルの<code>$WORKSPACE</code>の場所を別にする方法がわかっていないのでリモートとローカルの<code>$WORKSPACE</code>の場所は同じです。</p>
+<p>上のコマンドに</p>
+<p><code>&amp;&amp; ssh -i $IDENTITY_FILE -p $SSH_PORT $REMOTE_USR@$REMOTE_ADDR &quot;cd $WORKSPACE &amp;&amp; go mod tidy&quot;</code></p>
+<p>とかをくっつけてあげればワンライナーでソースの共有とモジュールのインストールができます。<code>go mod tidy</code>の部分はお使いの言語に対応させてください。</p>
+<p>。。。とここまで記事を書いて気づいたのですが、go mod tidyをした後、nvimを再起動させないとモジュールがインストールされたことに気付いてくれません。。。</p>
+<p>なぜでしょうか。。。</p>
+<p>とりあえず力尽きたので今回の記事はここまでです。</p>
+<p>マイナー過ぎるというかスマートな人はやらないことをやっているので誰も読んでくれないだろうという推測のもとガバガバ日本語で書いています。読みにくかったらごめんなさい。</p>
+
+    </div>
+    <footer class="content__footer"></footer>
+
+            </section>
+
+            <section class="page__aside">
+                <div class="aside__about">
+<div class="aside__about">
+    
+<h1 class="about__title">Where you at?</h1>
+<p class="about__description">プログラミングとか電子工作とか</p>
+</div>
+
+
+<ul class="aside__social-links">
+    
+    <li>
+        <a href="mailto:m.koutaoru2004@gmail.com" rel="me" aria-label="Email" title="Email"><i class="fas fa-envelope" aria-hidden="true"></i></a>&nbsp;
+    </li>
+    
+    <li>
+        <a href="https://github.com/m-dev672" rel="me" aria-label="GitHub" title="GitHub"><i class="fab fa-github" aria-hidden="true"></i></a>&nbsp;
+    </li>
+    
+    <li>
+        <a href="https://twitter.com/m_dev672" rel="me" aria-label="Twitter" title="Twitter"><i class="fab fa-twitter" aria-hidden="true"></i></a>&nbsp;
+    </li>
+    
+</ul>
+</div>
+                <hr>
+                <div class="aside__content">
+    
+        Breadcrumb
+        <ol  class="nav navbar-nav">
+            
+            <li>
+                <a href="/categories">Categories</a>
+            </li>
+            <li>
+                <a href="/categories/vim">Vim</a>
+            </li>
+            <li>
+                vim-lspでリモートのLanguage Serverとお喋りする
+            </li>
+        </ol>
+    
+
+    
+        Categories
+        <ul>
+            
+                <li><a href="/categories/vim">Vim</a> </li>
+            
+        </ul>
+    
+
+    
+        Tags
+        <ul>
+            
+                <li><a href="/tags/neovim">neovim</a> </li>
+            
+                <li><a href="/tags/socat">socat</a> </li>
+            
+                <li><a href="/tags/vim-lsp">vim-lsp</a> </li>
+            
+                <li><a href="/tags/plug-vim">plug-vim</a> </li>
+            
+                <li><a href="/tags/golang">golang</a> </li>
+            
+        </ul>
+    
+
+    
+    
+        <p>
+            By 森 康太朗, 
+            2022-07-01
+        </p>
+    
+
+                </div>
+            </section>
+
+            <footer class="page__footer"><p class="copyright">© 2021 Koutarou Mori</p>
+<p class="advertisement">Powered by <a href="https://gohugo.io/">hugo</a> and <a href="https://github.com/joeroe/risotto">risotto</a>.</p>
+</footer>
+
+        </div>
+    </body>
+
+</html>

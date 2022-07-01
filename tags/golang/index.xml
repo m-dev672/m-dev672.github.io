@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Articles on Where you at?</title>
-    <link>https://m-dev672.github.io/articles/</link>
-    <description>Recent content in Articles on Where you at?</description>
+    <title>golang on Where you at?</title>
+    <link>https://m-dev672.github.io/tags/golang/</link>
+    <description>Recent content in golang on Where you at?</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>jp</language>
     <copyright>© 2021 Koutarou Mori</copyright>
-    <lastBuildDate>Fri, 01 Jul 2022 17:26:34 +0900</lastBuildDate><atom:link href="https://m-dev672.github.io/articles/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 01 Jul 2022 17:26:34 +0900</lastBuildDate><atom:link href="https://m-dev672.github.io/tags/golang/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>vim-lspでリモートのLanguage Serverとお喋りする</title>
       <link>https://m-dev672.github.io/articles/vimsocat/</link>
@@ -24,17 +24,6 @@ rsyncで差分だけを共有することで、細い回線でも共有してお
 goplsにJSON-RPCを流すsocatサーバーを立てる socat tcp-listen:1024,fork,reuseaddr exec:&#39;gopls&#39;
 コマンドの雑解説 tcp-listen:1024 1024ポートでLISTEN ,fork,reuseaddr よくわからんけど多分1対多で通信できるようになる？ exec:&amp;lsquo;gopls&amp;rsquo; goplsを実行してstdinで通信を流してstdioを返す
 ローカルにsocatとnvimをインストール vim-plugとvim-lspを入れるためにcurlとgitもインストールします。</description>
-    </item>
-    
-    <item>
-      <title>Markdownテスト</title>
-      <link>https://m-dev672.github.io/articles/sample/</link>
-      <pubDate>Wed, 29 Jun 2022 00:17:48 +0900</pubDate>
-      
-      <guid>https://m-dev672.github.io/articles/sample/</guid>
-      <description>h1 h2 h3 h4 h5 h6 Hello World !
- Hello World!
-  Hello  World  !       Hello World World! !  Hello World! console.log(&amp;#34;Hello World!&amp;#34;);    Hello World !     Hello World !    Hello World!</description>
     </item>
     
   </channel>
